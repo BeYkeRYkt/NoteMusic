@@ -1,0 +1,10 @@
+name: NoteMusic
+main: ykt.BeYkeRYkt.NoteMusic.NoteMusic
+author: BeYkeRYkt
+version: 1.0
+description: More music .nbs! 
+
+commands:
+  nm:
+    description: Main commands for NoteMusic
+    usage: /<command> [args]
