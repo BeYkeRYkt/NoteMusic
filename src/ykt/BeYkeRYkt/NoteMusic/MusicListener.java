@@ -2,13 +2,11 @@ package ykt.BeYkeRYkt.NoteMusic;
 
 import java.io.File;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -18,6 +16,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import ykt.BeYkeRYkt.NoteMusic.NBS.SignSongPlayer;
+
+import com.xxmicloxx.NoteBlockAPI.SongEndEvent;
 
 
 public class MusicListener implements Listener{
@@ -30,7 +32,20 @@ public class MusicListener implements Listener{
 	}
 	
 	@EventHandler
+	public void onMusicEnd(SongEndEvent event){
+		if(event.getSongPlayer() instanceof SignSongPlayer){
+			SignSongPlayer songplayer = (SignSongPlayer) event.getSongPlayer();
+		    Sign s = songplayer.getSingPlayer();
+			
+    		s.setLine(0, ChatColor.DARK_RED + "[NoteMusic]");
+    		s.update(true);
+		}
+		
+	}
+	
+	@EventHandler
 	public void onInteractSign(PlayerInteractEvent event){
+		if(!event.isCancelled()){
         Player player = event.getPlayer();
         Location loc = player.getLocation();
         World world = player.getWorld();
@@ -42,27 +57,36 @@ public class MusicListener implements Listener{
                     Sign s = (Sign) st;
                     
                     if (s.getLine(0).equals(ChatColor.DARK_RED + "[NoteMusic]") && !s.getLine(1).isEmpty()) {
+                    	if(player.hasPermission(plugin.playblockPermissions)){
                                         	    
                     			plugin.getAPI().playSong(player, s.getLine(1), s);
                     			
                 		s.setLine(0, ChatColor.DARK_GREEN + "[NoteMusic]");
                 		s.update(true);
-                    	
+                    	}else{
+                    		player.sendMessage(ChatColor.DARK_RED + "[NoteMusic]" + ChatColor.RED + "You don't have permission.");
+                    		event.setCancelled(true);
+                    	}
                     }else if (s.getLine(0).equals(ChatColor.DARK_GREEN + "[NoteMusic]") && !s.getLine(1).isEmpty()) {
-
+                    	if(player.hasPermission(plugin.stopblockPermissions)){
                     	        player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Music stopped.");
                                	plugin.getAPI().stopSong(player, block.getLocation());
-
+                    	}else{
+                    		player.sendMessage(ChatColor.DARK_RED + "[NoteMusic]" + ChatColor.RED + "You don't have permission.");
+                    		event.setCancelled(true);
+                    	}
                 		s.setLine(0, ChatColor.DARK_RED + "[NoteMusic]");
                 		s.update(true);
                     }
             	}
             }
         }
+		}
 	}
 	
     @EventHandler
     public void onPlayerBuild(SignChangeEvent event){
+		if(!event.isCancelled()){
     	Player p = event.getPlayer();
     	Block block = event.getBlock();
     	if(event.getBlock().getType() == Material.WALL_SIGN){
@@ -91,10 +115,12 @@ public class MusicListener implements Listener{
                 	}
                 }
     }
+    }
 	
     
     @EventHandler
     public void onDestroySign(BlockBreakEvent event){
+		if(!event.isCancelled()){
        	Player p = event.getPlayer();
     	Block block = event.getBlock();
     	if(event.getBlock().getType() == Material.WALL_SIGN){
@@ -106,5 +132,6 @@ public class MusicListener implements Listener{
             	
             }
     	}
+		}
     }
 }

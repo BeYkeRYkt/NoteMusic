@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -32,7 +31,7 @@ public class NoteMusicAPI{
 	  
 	  public void playSong(Player player, String file, Sign block){
 		  
-		   File f = new File(plugin.getDataFolder(), file + ".nbs");
+		   File f = new File(plugin.getDataFolder() + "/Tracks", file + ".nbs");
 		  		  
 			  Song nbs = NBSDecoder.parse(f);
 			  
@@ -40,16 +39,19 @@ public class NoteMusicAPI{
 
 				  ((SignSongPlayer) song).setSingPlayer(block);
 				  			  
+				  
 				  song.addPlayer(player);
 				  song.setPlaying(true);
 				  song.setAutoDestroy(true);
 				  jukebox.put(block.getLocation(), song);
-	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing: " + ChatColor.YELLOW + song.getSong().getTitle());
+	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing music : " + ChatColor.YELLOW + song.getSong().getTitle());
 	  }
 	  
 	  public void playSongForPlayer(Player player, String file, Player by){
 		  
-		   File f = new File(plugin.getDataFolder(), file + ".nbs");
+		  File f = new File(plugin.getDataFolder() + "/Tracks", file + ".nbs");
+		  
+		  NoteBlockPlayerMain.stopPlaying(player);
 		  		  
 			  Song nbs = NBSDecoder.parse(f);
 			  
@@ -60,13 +62,15 @@ public class NoteMusicAPI{
 				  song.setPlaying(true);
 				  song.setAutoDestroy(true);
 				  
-	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing: " + ChatColor.YELLOW + song.getSong().getTitle() + ChatColor.GREEN + " by " + ChatColor.RED + by.getName());
+	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing music : " + ChatColor.YELLOW + song.getSong().getTitle() + ChatColor.GREEN + " by " + ChatColor.RED + by.getName());
 	  }
 
 	  public void playSongForMe(Player player, String file){
 		  
-		   File f = new File(plugin.getDataFolder(), file + ".nbs");
+		  File f = new File(plugin.getDataFolder() + "/Tracks", file + ".nbs");
 		  		  
+		  NoteBlockPlayerMain.stopPlaying(player);
+		  
 			  Song nbs = NBSDecoder.parse(f);
 			  
 				  SongPlayer song = new RadioSongPlayer(nbs);
@@ -76,7 +80,7 @@ public class NoteMusicAPI{
 				  song.setPlaying(true);
 				  song.setAutoDestroy(true);
 				  
-	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing: " + ChatColor.YELLOW + song.getSong().getTitle());
+	         	  player.sendMessage(ChatColor.DARK_GREEN + "[NoteMusic]" + ChatColor.GREEN + "Playing music : " + ChatColor.YELLOW + song.getSong().getTitle());
 	  }
 	  
 	  public void stopSong(Player player, Location loc){
@@ -91,4 +95,5 @@ public class NoteMusicAPI{
 	  public void stopSongForPlayer(Player player){
 		  NoteBlockPlayerMain.stopPlaying(player);
 	  }
+	  
 }

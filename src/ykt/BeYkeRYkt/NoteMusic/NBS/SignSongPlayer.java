@@ -1,10 +1,6 @@
 package ykt.BeYkeRYkt.NoteMusic.NBS;
 
-import java.util.Iterator;
-
-import org.bukkit.Effect;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 
@@ -13,7 +9,6 @@ import ykt.BeYkeRYkt.NoteMusic.NoteMusic;
 import com.xxmicloxx.NoteBlockAPI.Instrument;
 import com.xxmicloxx.NoteBlockAPI.Layer;
 import com.xxmicloxx.NoteBlockAPI.Note;
-import com.xxmicloxx.NoteBlockAPI.NoteBlockPlayerMain;
 import com.xxmicloxx.NoteBlockAPI.NotePitch;
 import com.xxmicloxx.NoteBlockAPI.Song;
 import com.xxmicloxx.NoteBlockAPI.SongPlayer;
