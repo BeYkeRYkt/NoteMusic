@@ -96,7 +96,7 @@ public class MusicListener implements Listener{
                 	if(block.getRelative(1,0,0).getType() == Material.JUKEBOX || block.getRelative(-1,0,0).getType() == Material.JUKEBOX || block.getRelative(0,0,1).getType() == Material.JUKEBOX || block.getRelative(0,0,-1).getType() == Material.JUKEBOX){
                 	
 
-            		 if (!new File(plugin.getDataFolder(), event.getLine(1) + ".nbs").exists()) {
+            		 if (!new File(plugin.getDataFolder() + "/Tracks", event.getLine(1) + ".nbs").exists()) {
             		 System.out.println("[NoteMusic] .nbs not found");
             		 p.sendMessage(ChatColor.DARK_RED + "[NoteMusic]" + ChatColor.RED + "File not found");
              		event.setCancelled(true);
